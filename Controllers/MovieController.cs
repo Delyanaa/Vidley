@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using Vidley.Models;
+using Vidley.ViewModels;
 
 namespace Vidley.Controllers
 {
@@ -29,17 +31,13 @@ namespace Vidley.Controllers
         [Route("movie/random")]
         public IActionResult Random()
         {
-            var movie = new Movie
-            {
-                Name = "Shrek!",
-                Id = 1
+            var randomViewModel = new RandomMovieViewModel(
+                    new Movie { Name = "Shrek!", Id = 1 },
+                    new List<Customer>() { new Customer() { Id = 1, Name = "Sam" }, new Customer() { Id = 2, Name = "Bella" } }
+                );
+            
 
-            };
-
-
-            ViewData["Movie"] = movie;
-
-            return View(movie);
+            return View(randomViewModel);
         }
 
         [Route("movie/edit")]
