@@ -12,7 +12,7 @@ namespace Vidley.Controllers
         }
 
         [Route("movie/byReleaseDate")]
-        [Route("movie/byReleaseDate/{year:regex(\\d{{4}})}/{month?}")]
+        [Route("movie/byReleaseDate/{year?}/{month?}")]
         public ActionResult ByReleaseDate(int? year, int? month)
         {
             DateTime dateInfo =  DateTime.Now;
@@ -22,7 +22,6 @@ namespace Vidley.Controllers
 
             if (!month.HasValue)
                 month = dateInfo.Month;
-
 
             return Content($"Year: {year}, Month: {month}");
         }
@@ -36,6 +35,9 @@ namespace Vidley.Controllers
                 Id = 1
 
             };
+
+
+            ViewData["Movie"] = movie;
 
             return View(movie);
         }
