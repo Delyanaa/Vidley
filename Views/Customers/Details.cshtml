@@ -1,0 +1,17 @@
+﻿@model Customer
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <hr />
+    <h2>@Model.Name</h2>
+    <hr/>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
