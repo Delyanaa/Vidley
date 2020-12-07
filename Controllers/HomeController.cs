@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Vidley.Models;
 
 namespace Vidley.Controllers
@@ -18,6 +17,10 @@ namespace Vidley.Controllers
             _logger = logger;
         }
 
+
+        [Route("")]
+        [Route("home")]
+        [Route("home/index")]
         public IActionResult Index()
         {
             var movie = new Movie{
@@ -28,18 +31,7 @@ namespace Vidley.Controllers
             return View();
         }
 
-        public IActionResult Random()
-        {
-            var movie = new Movie
-            {
-                Name = "Shrek!",
-                Id = 1
-
-            };
-
-            return View(movie);
-        }
-
+        [Route("home/privacy")]
         public IActionResult Privacy()
         {
             return View();
