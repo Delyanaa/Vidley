@@ -392,3 +392,4 @@ D:\VS_Projects\Vidley\obj\Debug\net5.0\Vidley.dll
 D:\VS_Projects\Vidley\obj\Debug\net5.0\ref\Vidley.dll
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Vidley.pdb
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Vidley.genruntimeconfig.cache
+D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Home\Random.cshtml.g.cs
