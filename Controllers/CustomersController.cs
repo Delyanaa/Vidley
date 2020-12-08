@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Vidley.Data;
@@ -23,7 +24,7 @@ namespace Vidley.Controllers
         [Route("customers")]
         public ActionResult Index()
         {
-            var customers = _context.Customers.ToList();
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
             return View(customers);
         }
@@ -40,7 +41,7 @@ namespace Vidley.Controllers
                 else
                     return View(customer);
             }
-            else
+            else 
                 return BadRequest();
         }
     }

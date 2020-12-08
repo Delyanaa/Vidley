@@ -12,6 +12,9 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.MembershipType.DiscountRate)
             </th>
             <th></th>
         </tr>
@@ -23,6 +26,9 @@
                 <td>
                     @Html.ActionLink(item.Name,"Details","Customers", new { id = item.Id}, null)
                     @*Html.DisplayFor(modelItem => item.Name)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MembershipType.DiscountRate)%
                 </td>
             </tr>
         }
