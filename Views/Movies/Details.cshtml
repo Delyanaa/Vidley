@@ -5,8 +5,15 @@
 }
 
 <h1>Details</h1>
-
+<hr />
 <h3>@Model.Name</h3>
+<hr />  
+<ul>
+    <li>@nameof(Model.Genre): @Model.Genre.Name</li>
+    <li>Release Date: @Model.ReleaseDate.ToString("dddd, MMM d, yyyy")</li>
+    <li>Date Added: @Model.DateAdded.ToString("dddd, MMM d, yyyy")</li>
+    <li>Number in Stock: @Model.NumberInStock</li>
+</ul>
 
 <div>
     <a asp-action="Index">Go back to list</a>

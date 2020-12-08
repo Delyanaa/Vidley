@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vidley.Data;
 using Vidley.Models;
 using Vidley.ViewModels;
 
@@ -9,12 +11,22 @@ namespace Vidley.Controllers
 {
     public class MoviesController : Controller
     {
-        ApplicationdbContext _context
+        ApplicationDbContext _context;
+
+        public MoviesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
         [Route("movies")]
         public ActionResult Index()
         {
-            var movies = movieList;
+            var movies = _context.Movies.Include(m => m.Genre).ToList();
             return View(movies);
         }
 
@@ -22,7 +34,7 @@ namespace Vidley.Controllers
         public ActionResult Details(int? id)
         {
             if (id.HasValue)
-                return View(movieList.Where(m => m.Id == id).FirstOrDefault());
+                return View(_context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id));
             else
                 return BadRequest();
 
