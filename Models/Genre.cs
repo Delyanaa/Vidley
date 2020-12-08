@@ -11,6 +11,6 @@ namespace Vidley.Models
         public int Id { get; set; }
         [Required]
         [StringLength(256)]
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }
