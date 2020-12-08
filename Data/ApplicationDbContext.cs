@@ -7,7 +7,7 @@ using Vidley.Models;
 
 namespace Vidley.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Movie> Movies { get; set; }
