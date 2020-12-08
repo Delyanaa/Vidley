@@ -14,7 +14,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th> 
             <th>
-                Discount Rate
+                Membership
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                     @*Html.DisplayFor(modelItem => item.Name)*@
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MembershipType.DiscountRate)%
+                    @Html.DisplayFor(modelItem => item.MembershipType.Name)
                 </td>
             </tr>
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vidley.Data;
 
 namespace Vidley.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201208214820_AddBirtdayToCustomers")]
+    partial class AddBirtdayToCustomers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +228,6 @@ namespace Vidley.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsSubscribeToNewsletter")
                         .HasColumnType("bit");
 
@@ -253,6 +252,9 @@ namespace Vidley.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<DateTime?>("Birtday")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("DiscountRate")
                         .HasColumnType("tinyint");

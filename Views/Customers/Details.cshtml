@@ -9,8 +9,20 @@
 
 <div>
     <hr />
-    <h2>@Model.Name</h2>
-    <hr/>
+    <h2 class="mb-2">@Model.Name</h2>
+    <hr />
+    <ul>
+        @if (!String.IsNullOrWhiteSpace(Model.MembershipType.Name))
+        {
+            <li>Membership Type: @Model.MembershipType.Name</li>
+        } 
+        
+        @if (Model.Birthday != null)
+        {
+            <li>Birthday: @(((DateTime)Model.Birthday).ToString("dd MMMM yyyy"))</li>
+        }
+
+    </ul>
 </div>
 <div>
     <a asp-action="Index">Back to List</a>

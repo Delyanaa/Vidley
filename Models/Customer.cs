@@ -15,6 +15,8 @@ namespace Vidley.Models
         public bool IsSubscribeToNewsletter { get; set; }
         public MembershipType MembershipType { get; set; }
 
+        public DateTime? Birthday { get; set; }
+
         public int MembershipTypeId { get; set; }
     }
 }
