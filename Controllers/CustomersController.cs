@@ -1,22 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Vidley.Data;
 using Vidley.Models;
 
 namespace Vidley.Controllers
 {
     public class Customers : Controller
     {
-        private List<Customer> customerList = new List<Customer>() {
-                new Customer{ Id = 1, Name = "John Smith"},
-                new Customer{ Id = 2, Name = "Tara Jason"},
-                new Customer{ Id = 3, Name = "Lora Petrov"}
-        };
+        private ApplicationDbContext _context;
+
+        public Customers(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
         [Route("customers")]
         public ActionResult Index()
         {
-            var customers = customerList;
+            var customers = _context.Customers.ToList();
 
             return View(customers);
         }
@@ -25,7 +32,14 @@ namespace Vidley.Controllers
         public ActionResult Details(int? id)
         {
             if (id.HasValue)
-                return View(customerList.Where(c => c.Id == id).FirstOrDefault());
+            {
+                var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+
+                if (customer == null)
+                    return BadRequest();
+                else
+                    return View(customer);
+            }
             else
                 return BadRequest();
         }
