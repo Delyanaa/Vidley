@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vidley.Data;
 using Vidley.Models;
+using Vidley.ViewModels;
 
 namespace Vidley.Controllers
 {
@@ -48,7 +49,9 @@ namespace Vidley.Controllers
         [Route("customers/newCustomer")]
         public ActionResult NewCustomer()
         {
-            return View();
+            var membershipTypes = _context.MembershipTypes.ToList();
+
+            return View(new NewCustomerViewModel(new Customer(), membershipTypes));
         }
     }
 }
