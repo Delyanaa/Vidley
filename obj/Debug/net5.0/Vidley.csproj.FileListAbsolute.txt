@@ -442,3 +442,4 @@ D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Customers\Details.cshtml.g.cs
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Movies\Details.cshtml.g.cs
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Movies\Random.cshtml.g.cs
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Vidley.csprojAssemblyReference.cache
+D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Customers\NewCustomer.cshtml.g.cs

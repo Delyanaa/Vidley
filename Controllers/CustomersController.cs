@@ -44,5 +44,11 @@ namespace Vidley.Controllers
             else 
                 return BadRequest();
         }
+
+        [Route("customers/newCustomer")]
+        public ActionResult NewCustomer()
+        {
+            return View();
+        }
     }
 }
