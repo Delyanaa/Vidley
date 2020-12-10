@@ -35,14 +35,14 @@ namespace Vidley.Controllers
         {
             if (id.HasValue)
             {
-                var customer = _context.Customers.Include(c=>c.MembershipType).SingleOrDefault(c => c.Id == id);
+                var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
                 if (customer == null)
                     return BadRequest();
                 else
                     return View(customer);
             }
-            else 
+            else
                 return BadRequest();
         }
 
@@ -51,12 +51,12 @@ namespace Vidley.Controllers
         {
             var membershipTypes = _context.MembershipTypes.ToList();
 
-            return View(new NewCustomerViewModel() { MembershipTypesList = membershipTypes});
+            return View("CustomerForm", new CustomerFormViewModel() { MembershipTypesList = membershipTypes });
         }
 
         [HttpPost]
         [Route("customers/new")]
-        public ActionResult Create(NewCustomerViewModel model)
+        public ActionResult Create(CustomerFormViewModel model)
         {
             if (model != null)
             {
@@ -65,6 +65,24 @@ namespace Vidley.Controllers
             }
 
             return RedirectToAction("Index", "Customers");
+        }
+
+        [Route("customers/edit")]
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CustomerFormViewModel 
+            { 
+                Customer = customer, 
+                MembershipTypesList = _context.MembershipTypes.ToList() 
+            };
+
+            return View("CustomerForm", viewModel);
         }
     }
 }

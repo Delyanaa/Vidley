@@ -1,4 +1,4 @@
-﻿@model NewCustomerViewModel
+﻿@model CustomerFormViewModel
 
 @{
     ViewData["Title"] = "New";
@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Customer.Birthday)
-            @Html.TextBoxFor(m => m.Customer.Birthday, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Customer.Birthday, "{0: d MMM yyyy}", new { @class = "form-control" })
         </div>
         <div class="checkbox">
             <label>

@@ -6,7 +6,7 @@ using Vidley.Models;
 
 namespace Vidley.ViewModels
 {
-    public class NewCustomerViewModel
+    public class CustomerFormViewModel
     {
         public Customer Customer { get; set; }
 
