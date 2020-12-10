@@ -60,7 +60,20 @@ namespace Vidley.Controllers
         {
             if (model != null)
             {
-                _context.Customers.Add(model.Customer);
+                if (model.Customer.Id == 0)
+                {
+                    _context.Customers.Add(model.Customer);
+                }
+                else
+                {
+                    var customer = model.Customer;
+                    var customerFromDb = _context.Customers.Single(c => c.Id == customer.Id);
+
+                    customerFromDb.Name = customer.Name;
+                    customerFromDb.IsSubscribeToNewsletter = customer.IsSubscribeToNewsletter;
+                    customerFromDb.Birthday = customer.Birthday;
+                    customerFromDb.MembershipTypeId = customer.MembershipTypeId;
+                }
                 _context.SaveChanges();
             }
 
