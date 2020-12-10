@@ -11,11 +11,5 @@ namespace Vidley.ViewModels
         public Customer Customer { get; set; }
 
         public IEnumerable<MembershipType> MembershipTypesList { get; set; }
-
-        public NewCustomerViewModel(Customer customer, IEnumerable<MembershipType> membershipTypesList)
-        {
-            Customer = customer;
-            MembershipTypesList = membershipTypesList;
-        }
     }
 }

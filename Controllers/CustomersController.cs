@@ -8,11 +8,11 @@ using Vidley.ViewModels;
 
 namespace Vidley.Controllers
 {
-    public class Customers : Controller
+    public class CustomersController : Controller
     {
         private ApplicationDbContext _context;
 
-        public Customers(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -46,12 +46,25 @@ namespace Vidley.Controllers
                 return BadRequest();
         }
 
-        [Route("customers/newCustomer")]
-        public ActionResult NewCustomer()
+        [Route("customers/new")]
+        public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
 
-            return View(new NewCustomerViewModel(new Customer(), membershipTypes));
+            return View(new NewCustomerViewModel() { MembershipTypesList = membershipTypes});
+        }
+
+        [HttpPost]
+        [Route("customers/new")]
+        public ActionResult Create(NewCustomerViewModel model)
+        {
+            if (model != null)
+            {
+                _context.Customers.Add(model.Customer);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Customers");
         }
     }
 }

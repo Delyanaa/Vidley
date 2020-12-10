@@ -10,18 +10,19 @@ namespace Vidley.Models
     {
         public int Id { get; set; }
        
-        [Required]
+
         [StringLength(225)]
+        [Required]
         public string Name { get; set; }
         
         public bool IsSubscribeToNewsletter { get; set; }
         
-        [Display(Name = "Membership Type")]
         public MembershipType MembershipType { get; set; }
 
         [Display(Name ="Date of Birth")]
         public DateTime? Birthday { get; set; }
 
+        [Display(Name = "Membership Type")]
         public int MembershipTypeId { get; set; }
     }
 }
