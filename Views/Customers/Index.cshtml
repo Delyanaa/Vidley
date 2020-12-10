@@ -25,10 +25,12 @@
             <tr>
                 <td>
                     @Html.ActionLink(item.Name,"Details","Customers", new { id = item.Id}, null)
-                    @*Html.DisplayFor(modelItem => item.Name)*@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MembershipType.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Customers", new {id = item.Id }, null)
                 </td>
             </tr>
         }
