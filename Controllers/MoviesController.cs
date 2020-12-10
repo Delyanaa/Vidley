@@ -82,7 +82,23 @@ namespace Vidley.Controllers
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View(new MovieFormViewModel() { Genres = genres});
+            return View("MovieForm", new MovieFormViewModel() { Genres = genres});
+        }
+
+        [HttpPost]
+        [Route("movies/new")]
+        public ActionResult Save(MovieFormViewModel viewModel)
+        {
+            if (viewModel.Movie.Id == 0)
+            {
+                _context.Movies.Add(viewModel.Movie);
+            }
+            else
+            {
+
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movies");
         }
     }
 }
