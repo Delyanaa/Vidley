@@ -10,6 +10,6 @@ namespace Vidley.ViewModels
     {
         public Movie Movie { get; set; }
 
-        public IEnumerable<Genre> Genres { get; set; }
+        public IEnumerable<Genre> GenresList { get; set; }
     }
 }

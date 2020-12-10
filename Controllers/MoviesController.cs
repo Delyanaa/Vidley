@@ -65,24 +65,11 @@ namespace Vidley.Controllers
             return View(randomViewModel);
         }
 
-        [Route("movies/edit")]
-        public ActionResult Edit(int? pageIndex, string sortBy)
-        {
-            if (!pageIndex.HasValue)
-                pageIndex = 1;
-
-            if (String.IsNullOrWhiteSpace(sortBy))
-                sortBy = "Name";
-
-            return Content($"?pageIndex={pageIndex}&sortBy={sortBy}");
-        }
-
-
         [Route("movies/new")]
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View("MovieForm", new MovieFormViewModel() { Genres = genres});
+            return View("MovieForm", new MovieFormViewModel() { GenresList = genres});
         }
 
         [HttpPost]
@@ -95,10 +82,37 @@ namespace Vidley.Controllers
             }
             else
             {
+                var movie = viewModel.Movie;
+                var movieFromDb = _context.Movies.Single(m => m.Id == movie.Id);
 
+                movieFromDb.Name = movie.Name;
+                movieFromDb.ReleaseDate = movie.ReleaseDate;
+                movieFromDb.DateAdded = movie.DateAdded;
+                movieFromDb.NumberInStock = movie.NumberInStock;
+                movieFromDb.GenreId = movie.GenreId;             
             }
             _context.SaveChanges();
             return RedirectToAction("Index", "Movies");
+        }
+
+        [Route("movies/edit")]
+        public ActionResult Edit(int? id)
+        {
+            if (id.HasValue)
+            {
+                var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+                if (movie != null)
+                {
+                    var movieViewModel = new MovieFormViewModel
+                    {
+                        Movie = movie,
+                        GenresList = _context.Genres.ToList()
+                    };
+
+                    return View("MovieForm", movieViewModel);
+                }
+            }
+            return View("MoviewForm");
         }
     }
 }

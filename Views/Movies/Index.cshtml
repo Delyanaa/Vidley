@@ -29,6 +29,9 @@
             <td>
                 @item.Genre.Name
             </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Movies", new {id = item.Id }, null)
+            </td>
         </tr>
 }
     </tbody>
