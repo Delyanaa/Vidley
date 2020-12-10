@@ -11,7 +11,7 @@ namespace Vidley.Controllers
 {
     public class MoviesController : Controller
     {
-        ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public MoviesController(ApplicationDbContext context)
         {
@@ -37,15 +37,14 @@ namespace Vidley.Controllers
                 return View(_context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id));
             else
                 return BadRequest();
-
         }
 
         [Route("movies/byReleaseDate")]
         [Route("movies/byReleaseDate/{year?}/{month?}")]
         public ActionResult ByReleaseDate(int? year, int? month)
         {
-            DateTime dateInfo =  DateTime.Now;
-            
+            DateTime dateInfo = DateTime.Now;
+
             if (!year.HasValue)
                 year = dateInfo.Year;
 
@@ -62,7 +61,6 @@ namespace Vidley.Controllers
                     new Movie { Name = "Shrek!", Id = 1 },
                     new List<Customer>() { new Customer() { Id = 1, Name = "Sam" }, new Customer() { Id = 2, Name = "Bella" } }
                 );
-            
 
             return View(randomViewModel);
         }
@@ -77,6 +75,14 @@ namespace Vidley.Controllers
                 sortBy = "Name";
 
             return Content($"?pageIndex={pageIndex}&sortBy={sortBy}");
+        }
+
+
+        [Route("movies/new")]
+        public ActionResult New()
+        {
+            var genres = _context.Genres.ToList();
+            return View(new MovieFormViewModel() { Genres = genres});
         }
     }
 }

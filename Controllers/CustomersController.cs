@@ -22,6 +22,10 @@ namespace Vidley.Controllers
             _context.Dispose();
         }
 
+        /// <summary>
+        /// Shows list of customers
+        /// </summary>
+        /// <returns></returns>
         [Route("customers")]
         public ActionResult Index()
         {
@@ -46,6 +50,10 @@ namespace Vidley.Controllers
                 return BadRequest();
         }
 
+        /// <summary>
+        /// Renders empty customer form
+        /// </summary>
+        /// <returns></returns>
         [Route("customers/new")]
         public ActionResult New()
         {
@@ -54,16 +62,19 @@ namespace Vidley.Controllers
             return View("CustomerForm", new CustomerFormViewModel() { MembershipTypesList = membershipTypes });
         }
 
+        /// <summary>
+        /// Creates a new customer or saves new details for an existing one
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("customers/new")]
-        public ActionResult Create(CustomerFormViewModel model)
+        public ActionResult Save(CustomerFormViewModel model)
         {
             if (model != null)
             {
                 if (model.Customer.Id == 0)
-                {
                     _context.Customers.Add(model.Customer);
-                }
                 else
                 {
                     var customer = model.Customer;
@@ -76,7 +87,6 @@ namespace Vidley.Controllers
                 }
                 _context.SaveChanges();
             }
-
             return RedirectToAction("Index", "Customers");
         }
 
