@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Vidley.Models.DataAnnotations;
 
 namespace Vidley.Models
 {
@@ -12,7 +13,7 @@ namespace Vidley.Models
        
 
         [StringLength(225)]
-        [Required]
+        [Required(ErrorMessage ="Please, enter your name!")]
         public string Name { get; set; }
         
         public bool IsSubscribeToNewsletter { get; set; }
@@ -20,10 +21,11 @@ namespace Vidley.Models
         public MembershipType MembershipType { get; set; }
 
         [Display(Name ="Date of Birth")]
+        [Min18ForAMembership]
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "Membership Type")]
-        [Required]
+        [Required(ErrorMessage = "Please, specify the type of membership.")]
         public int MembershipTypeId { get; set; }
     }
 }
