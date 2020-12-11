@@ -23,6 +23,7 @@ namespace Vidley.Models
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "Membership Type")]
+        [Required]
         public int MembershipTypeId { get; set; }
     }
 }

@@ -71,7 +71,7 @@ namespace Vidley.Controllers
         [Route("customers/new")]
         public ActionResult Save(CustomerFormViewModel model)
         {
-            if (model != null)
+            if (ModelState.IsValid)
             {
                 if (model.Customer.Id == 0)
                     _context.Customers.Add(model.Customer);
@@ -87,6 +87,17 @@ namespace Vidley.Controllers
                 }
                 _context.SaveChanges();
             }
+            else
+            {
+                return View(
+                    "CustomerForm",
+                    new CustomerFormViewModel
+                    {
+                        Customer = model.Customer,
+                        MembershipTypesList = _context.MembershipTypes.ToList()
+                    }
+                    );
+            }
             return RedirectToAction("Index", "Customers");
         }
 
@@ -99,10 +110,10 @@ namespace Vidley.Controllers
                 return NotFound();
             }
 
-            var viewModel = new CustomerFormViewModel 
-            { 
-                Customer = customer, 
-                MembershipTypesList = _context.MembershipTypes.ToList() 
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypesList = _context.MembershipTypes.ToList()
             };
 
             return View("CustomerForm", viewModel);
