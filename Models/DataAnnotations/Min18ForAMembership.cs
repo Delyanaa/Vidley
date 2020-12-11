@@ -12,7 +12,7 @@ namespace Vidley.Models.DataAnnotations
         {
             var customer = (Customer)validationContext.ObjectInstance;
 
-            if (customer.MembershipTypeId == 1)
+            if (customer.MembershipTypeId == 0 || customer.MembershipTypeId == 1)
                 return ValidationResult.Success;
 
             if (customer.Birthday == null)
