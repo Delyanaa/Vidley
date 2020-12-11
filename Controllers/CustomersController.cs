@@ -68,6 +68,7 @@ namespace Vidley.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         [Route("customers/new")]
         public ActionResult Save(CustomerFormViewModel model)
         {
