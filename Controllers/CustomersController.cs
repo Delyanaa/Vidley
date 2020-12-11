@@ -59,7 +59,7 @@ namespace Vidley.Controllers
         {
             var membershipTypes = _context.MembershipTypes.ToList();
 
-            return View("CustomerForm", new CustomerFormViewModel() { MembershipTypesList = membershipTypes });
+            return View("CustomerForm", new CustomerFormViewModel() { MembershipTypesList = membershipTypes, Customer = new Customer() });
         }
 
         /// <summary>
