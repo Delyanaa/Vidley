@@ -444,3 +444,6 @@ D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Movies\Random.cshtml.g.cs
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Vidley.csprojAssemblyReference.cache
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Customers\CustomerForm.cshtml.g.cs
 D:\VS_Projects\Vidley\obj\Debug\net5.0\Razor\Views\Movies\MovieForm.cshtml.g.cs
+D:\VS_Projects\Vidley\bin\Debug\net5.0\System.Net.Http.Formatting.dll
+D:\VS_Projects\Vidley\bin\Debug\net5.0\System.Web.Http.dll
+D:\VS_Projects\Vidley\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
