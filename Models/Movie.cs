@@ -26,7 +26,6 @@ namespace Vidley.Models
         [Range(1,20, ErrorMessage ="The quantity must be between 1 and 20.")]
         public int NumberInStock { get; set; }
 
-
         [Required(ErrorMessage = "Please, select a genre.")]
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
