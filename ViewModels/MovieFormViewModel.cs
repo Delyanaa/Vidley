@@ -37,5 +37,19 @@ namespace Vidley.ViewModels
                 return Id != 0 ? "Edit Movie" : "New Movie";
             }
         }
+
+        public MovieFormViewModel(Movie movie, IEnumerable<Genre> genresList)
+        {
+            Name = movie.Name;
+            ReleaseDate = movie.ReleaseDate;
+            NumberInStock = movie.NumberInStock;
+            GenreId = movie.GenreId;
+            GenresList = genresList;
+        }
+
+        public MovieFormViewModel()
+        {
+            Id = 0;
+        }
     }
 }

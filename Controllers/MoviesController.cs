@@ -69,7 +69,7 @@ namespace Vidley.Controllers
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View("MovieForm", new MovieFormViewModel() { Movie = new Movie(), GenresList = genres });
+            return View("MovieForm", new MovieFormViewModel() { GenresList = genres });
         }
 
         [HttpPost]
@@ -77,21 +77,28 @@ namespace Vidley.Controllers
         [Route("movies/new")]
         public ActionResult Save(MovieFormViewModel viewModel)
         {
+            var movie = new Movie
+            {
+                Name = viewModel?.Name,
+                Genre = GetGenre(viewModel.GenreId),
+                DateAdded = DateTime.Now,
+                ReleaseDate = (DateTime)viewModel?.ReleaseDate,
+                NumberInStock = (int)viewModel?.NumberInStock,
+                GenreId = viewModel.GenreId
+            };
+
             if (ModelState.IsValid)
             {
-                if (viewModel.Movie.Id == 0)
-                {
-                    _context.Movies.Add(viewModel.Movie);
-                }
+                if (viewModel.Id != null && viewModel.Id == 0)
+                    _context.Movies.Add(movie);
                 else
                 {
-                    var movie = viewModel.Movie;
-                    var movieFromDb = _context.Movies.Single(m => m.Id == movie.Id);
+                    var movieFromDb = _context.Movies.Single(m => m.Id == viewModel.Id);
 
                     movieFromDb.Name = movie.Name.Trim();
-                    movieFromDb.ReleaseDate = movie.ReleaseDate;
-                    movieFromDb.DateAdded = movie.DateAdded;
-                    movieFromDb.NumberInStock = movie.NumberInStock;
+                    movieFromDb.ReleaseDate = (DateTime) movie.ReleaseDate;
+                    movieFromDb.DateAdded = DateTime.Now;
+                    movieFromDb.NumberInStock = (int) movie.NumberInStock;
                     movieFromDb.GenreId = movie.GenreId;
                 }
                 _context.SaveChanges();
@@ -99,14 +106,13 @@ namespace Vidley.Controllers
             }
             else
             {
-                return View("MovieForm", 
-                    new MovieFormViewModel 
-                    { 
-                        Movie = viewModel.Movie,
-                        GenresList = _context.Genres.ToList()
-                    }
-                    );
+                return View("MovieForm", new MovieFormViewModel(movie, _context.Genres.ToList()));
             }
+        }
+
+        private Genre GetGenre(int id)
+        {
+            return _context.Genres.SingleOrDefault(g => g.Id == id);
         }
 
         [Route("movies/edit")]
@@ -116,10 +122,10 @@ namespace Vidley.Controllers
             if (movie != null)
             {
                 var movieViewModel = new MovieFormViewModel
-                {
-                    Movie = movie,
-                    GenresList = _context.Genres.ToList()
-                };
+                (
+                  movie,
+                  _context.Genres.ToList()
+                );
 
                 return View("MovieForm", movieViewModel);
             }
