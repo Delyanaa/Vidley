@@ -11,7 +11,6 @@ namespace Vidley.Models
     {
         public int Id { get; set; }
        
-
         [StringLength(225)]
         [Required(ErrorMessage ="Please, enter your name!")]
         public string Name { get; set; }

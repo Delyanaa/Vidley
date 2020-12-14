@@ -69,50 +69,64 @@ namespace Vidley.Controllers
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View("MovieForm", new MovieFormViewModel() { GenresList = genres});
+            return View("MovieForm", new MovieFormViewModel() { GenresList = genres });
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         [Route("movies/new")]
         public ActionResult Save(MovieFormViewModel viewModel)
         {
-            if (viewModel.Movie.Id == 0)
+            if (ModelState.IsValid)
             {
-                _context.Movies.Add(viewModel.Movie);
+                if (!viewModel.Movie.Id.HasValue || viewModel.Movie.Id == 0)
+                {
+                    _context.Movies.Add(viewModel.Movie);
+                }
+                else
+                {
+                    var movie = viewModel.Movie;
+                    var movieFromDb = _context.Movies.Single(m => m.Id == movie.Id);
+
+                    movieFromDb.Name = movie.Name;
+                    movieFromDb.ReleaseDate = movie.ReleaseDate;
+                    movieFromDb.DateAdded = movie.DateAdded;
+                    movieFromDb.NumberInStock = movie.NumberInStock;
+                    movieFromDb.GenreId = movie.GenreId;
+                }
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Movies");
             }
             else
             {
-                var movie = viewModel.Movie;
-                var movieFromDb = _context.Movies.Single(m => m.Id == movie.Id);
-
-                movieFromDb.Name = movie.Name;
-                movieFromDb.ReleaseDate = movie.ReleaseDate;
-                movieFromDb.DateAdded = movie.DateAdded;
-                movieFromDb.NumberInStock = movie.NumberInStock;
-                movieFromDb.GenreId = movie.GenreId;             
+                return View("MovieForm", 
+                    new MovieFormViewModel 
+                    { 
+                        Movie = viewModel.Movie,
+                        GenresList = _context.Genres.ToList()
+                    }
+                    );
             }
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Movies");
         }
 
         [Route("movies/edit")]
         public ActionResult Edit(int? id)
         {
-            if (id.HasValue)
+            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+            if (movie != null)
             {
-                var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
-                if (movie != null)
+                var movieViewModel = new MovieFormViewModel
                 {
-                    var movieViewModel = new MovieFormViewModel
-                    {
-                        Movie = movie,
-                        GenresList = _context.Genres.ToList()
-                    };
+                    Movie = movie,
+                    GenresList = _context.Genres.ToList()
+                };
 
-                    return View("MovieForm", movieViewModel);
-                }
+                return View("MovieForm", movieViewModel);
             }
-            return View("MoviewForm");
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
