@@ -69,7 +69,7 @@ namespace Vidley.Controllers
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View("MovieForm", new MovieFormViewModel() { GenresList = genres });
+            return View("MovieForm", new MovieFormViewModel() { Movie = new Movie(), GenresList = genres });
         }
 
         [HttpPost]
@@ -79,7 +79,7 @@ namespace Vidley.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!viewModel.Movie.Id.HasValue || viewModel.Movie.Id == 0)
+                if (viewModel.Movie.Id == 0)
                 {
                     _context.Movies.Add(viewModel.Movie);
                 }
@@ -88,7 +88,7 @@ namespace Vidley.Controllers
                     var movie = viewModel.Movie;
                     var movieFromDb = _context.Movies.Single(m => m.Id == movie.Id);
 
-                    movieFromDb.Name = movie.Name;
+                    movieFromDb.Name = movie.Name.Trim();
                     movieFromDb.ReleaseDate = movie.ReleaseDate;
                     movieFromDb.DateAdded = movie.DateAdded;
                     movieFromDb.NumberInStock = movie.NumberInStock;

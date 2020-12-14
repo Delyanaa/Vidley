@@ -81,7 +81,7 @@ namespace Vidley.Controllers
                     var customer = model.Customer;
                     var customerFromDb = _context.Customers.Single(c => c.Id == customer.Id);
 
-                    customerFromDb.Name = customer.Name;
+                    customerFromDb.Name = customer.Name.Trim();
                     customerFromDb.IsSubscribeToNewsletter = customer.IsSubscribeToNewsletter;
                     customerFromDb.Birthday = customer.Birthday;
                     customerFromDb.MembershipTypeId = customer.MembershipTypeId;

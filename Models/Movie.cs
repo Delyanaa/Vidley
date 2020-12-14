@@ -5,7 +5,7 @@ namespace Vidley.Models
 {
     public class Movie
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Please, enter the name of the film.")]
         [StringLength(256)]
@@ -23,6 +23,7 @@ namespace Vidley.Models
 
         [Required(ErrorMessage = "Please, enter the quantity.")]
         [Display(Name = "Number In Stock")]
+        [Range(1,20, ErrorMessage ="The quantity must be between 1 and 20.")]
         public int NumberInStock { get; set; }
 
 
