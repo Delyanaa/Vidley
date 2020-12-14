@@ -30,7 +30,6 @@ namespace Vidley.Controllers
         public ActionResult Index()
         {
             var customers = _context.Customers.Include(c => c.MembershipType).ToList();
-
             return View(customers);
         }
 
@@ -58,7 +57,6 @@ namespace Vidley.Controllers
         public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
-
             return View("CustomerForm", new CustomerFormViewModel() { MembershipTypesList = membershipTypes, Customer = new Customer() });
         }
 
@@ -107,9 +105,7 @@ namespace Vidley.Controllers
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
             if (customer == null)
-            {
                 return NotFound();
-            }
 
             var viewModel = new CustomerFormViewModel
             {
