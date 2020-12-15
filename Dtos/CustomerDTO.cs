@@ -15,7 +15,7 @@ namespace Vidley.Dtos
         [Required(ErrorMessage = "Please, enter your name!")]
         public string Name { get; set; }
 
-        public MembershipTypeDTO MembershipTypeDTO { get; set; }
+        public MembershipTypeDTO MembershipType { get; set; }
 
         public bool IsSubscribeToNewsletter { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace Vidley.Dtos
 {
-    public class GenresDTO
+    public class GenreDTO
     {
         public int Id { get; set; }
         [StringLength(256)]

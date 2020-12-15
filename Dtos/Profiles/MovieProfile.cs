@@ -7,11 +7,11 @@ namespace Vidley.Dtos.Profiles
     {
         public MovieProfile()
         {
-            CreateMap<MoviesDTO, Movie>();
-            CreateMap<Movie, MoviesDTO>();
+            CreateMap<MovieDTO, Movie>();
+            CreateMap<Movie, MovieDTO>();
 
-            CreateMap<GenresDTO, Genre>();
-            CreateMap<Genre, GenresDTO>();
+            CreateMap<GenreDTO, Genre>();
+            CreateMap<Genre, GenreDTO>();
         }
     }
 }

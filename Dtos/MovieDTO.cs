@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vidley.Dtos
 {
-    public class MoviesDTO
+    public class MovieDTO
     {
         public int Id { get; set; }
 
@@ -14,7 +14,7 @@ namespace Vidley.Dtos
         [StringLength(256)]
         public string Name { get; set; }
 
-        public GenresDTO Genre { get; set; }
+        public GenreDTO Genre { get; set; }
 
         [Required(ErrorMessage = "Please, enter a valid date.")]
         public DateTime ReleaseDate { get; set; }

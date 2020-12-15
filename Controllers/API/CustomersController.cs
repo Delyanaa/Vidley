@@ -1,25 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Vidley.Data;
-using Vidley.Models;
-using AutoMapper;
 using Vidley.Dtos;
-using System;
-using Microsoft.AspNetCore.Http.Extensions;
-using System.Web.Http;
-//using System.Web.Http;
+using Vidley.Models;
 
 namespace Vidley.Controllers.API
 {
     [ApiController]
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     public class CustomersController : ControllerBase
     {
         private ApplicationDbContext _context;
         private IMapper _mapper;
-
 
         public CustomersController(ApplicationDbContext context, IMapper mapper)
         {
@@ -27,15 +24,15 @@ namespace Vidley.Controllers.API
             _mapper = mapper;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public IEnumerable<CustomerDTO> GetCustomers() => _mapper.Map<IEnumerable<CustomerDTO>>(_context.Customers.ToList());
 
-        [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
+        [HttpGet("{id}")]
         public ActionResult GetCustomer(int? id) => (id == null)
-            ?  NotFound()
-            :  Ok(FindCustomerById((int) id));
-        
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+            ? NotFound()
+            : Ok(FindCustomerById((int)id));
+
+        [HttpPost]
         public ActionResult CreateCustomer(CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
@@ -49,8 +46,7 @@ namespace Vidley.Controllers.API
             return Created(new Uri(Request.GetDisplayUrl()), customerDto);
         }
 
-        // PUT: /api/customers/1 
-        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
+        [HttpPut("{id}")]
         public ActionResult UpdateCustomer(int id, CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
@@ -64,8 +60,7 @@ namespace Vidley.Controllers.API
             return Ok(customerFromDb);
         }
 
-        // DELETE: /api/customers/1 
-        [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public void DeleteCustomer(int id)
         {
             _context.Customers.Remove(FindCustomerById(id));
@@ -76,13 +71,11 @@ namespace Vidley.Controllers.API
         {
             Customer customerFromDb = null;
             customerFromDb = _context.Customers.Single(c => c.Id == id);
-        
 
-            if (customerFromDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+            if (customerFromDb == null) throw new System.Web.Http.HttpResponseException(HttpStatusCode.NotFound);
 
             var customerDto = _mapper.Map<CustomerDTO>(customerFromDb);
-            customerDto.MembershipTypeDTO = _mapper.Map<MembershipTypeDTO>(
+            customerDto.MembershipType = _mapper.Map<MembershipTypeDTO>(
                 _context.MembershipTypes.FirstOrDefault(m => m.Id == customerDto.MembershipTypeId)
                 );
             return customerFromDb;
