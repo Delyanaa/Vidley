@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 using System.Net;
 using Vidley.Data;
 using Vidley.Models;
 using AutoMapper;
 using Vidley.Dtos;
+using System;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Web.Http;
+//using System.Web.Http;
 
 namespace Vidley.Controllers.API
 {
@@ -24,49 +27,43 @@ namespace Vidley.Controllers.API
             _mapper = mapper;
         }
 
-        // GET: /api/customers 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public IEnumerable<CustomerDTO> GetCustomers() => _mapper.Map<IEnumerable<CustomerDTO>>(_context.Customers.ToList());
 
-        // GET: /api/customers/1 
         [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
-        public Customer GetCustomer(int? id) => (id == null) 
-            ? throw new HttpResponseException(HttpStatusCode.NotFound) 
-            : FindCustomerById((int) id);
+        public ActionResult GetCustomer(int? id) => (id == null)
+            ?  NotFound()
+            :  Ok(FindCustomerById((int) id));
         
-        // POST: /api/customers 
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public CustomerDTO CreateCustomer(CustomerDTO customerDto)
+        public ActionResult CreateCustomer(CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var customer = _mapper.Map<Customer>(customerDto);
 
             _context.Customers.Add(customer);
             _context.SaveChanges();
 
-            return customerDto;
+            return Created(new Uri(Request.GetDisplayUrl()), customerDto);
         }
-        
+
         // PUT: /api/customers/1 
         [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
-        public CustomerDTO UpdateCustomer(int id, CustomerDTO customerDto)
+        public ActionResult UpdateCustomer(int id, CustomerDTO customerDto)
         {
-            if (!ModelState.IsValid )
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            if (!ModelState.IsValid)
+                return BadRequest();
 
             var customerFromDb = FindCustomerById(id);
-            customerFromDb.Name = customerDto.Name;
-            customerFromDb.Birthday = customerDto.Birthday;
-            customerFromDb.IsSubscribeToNewsletter = customerDto.IsSubscribeToNewsletter;
-            customerFromDb.MembershipTypeId = customerDto.MembershipTypeId;
-
+            customerDto.Id = customerFromDb.Id;
+            _mapper.Map(customerDto, customerFromDb);
             _context.SaveChanges();
 
-            return _mapper.Map<CustomerDTO>(customerFromDb);
+            return Ok(customerFromDb);
         }
-       
+
         // DELETE: /api/customers/1 
         [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
         public void DeleteCustomer(int id)
@@ -78,15 +75,9 @@ namespace Vidley.Controllers.API
         private Customer FindCustomerById(int id)
         {
             Customer customerFromDb = null;
-            try
-            {
-                 customerFromDb = _context.Customers.Single(c => c.Id == id);
-            }
-            catch (System.InvalidOperationException)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-            
+            customerFromDb = _context.Customers.Single(c => c.Id == id);
+        
+
             if (customerFromDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 

@@ -19,7 +19,7 @@ namespace Vidley.Dtos
 
         public bool IsSubscribeToNewsletter { get; set; }
 
-        [Min18ForAMembership]
+        //[Min18ForAMembership]
         public DateTime? Birthday { get; set; }
 
         [Required(ErrorMessage = "Please, specify the type of membership.")]
