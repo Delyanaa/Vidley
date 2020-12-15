@@ -449,3 +449,5 @@ D:\VS_Projects\Vidley\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.
 D:\VS_Projects\Vidley\bin\Debug\net5.0\Microsoft.Extensions.FileProviders.Embedded.dll
 D:\VS_Projects\Vidley\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 D:\VS_Projects\Vidley\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+D:\VS_Projects\Vidley\bin\Debug\net5.0\package-lock.json
+D:\VS_Projects\Vidley\bin\Debug\net5.0\package.json

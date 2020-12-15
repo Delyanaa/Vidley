@@ -15,8 +15,8 @@ namespace Vidley.Controllers.API
     [Route("api/[controller]")]
     public class CustomersController : ControllerBase
     {
-        private ApplicationDbContext _context;
-        private IMapper _mapper;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
         public CustomersController(ApplicationDbContext context, IMapper mapper)
         {
@@ -28,7 +28,7 @@ namespace Vidley.Controllers.API
         public IEnumerable<CustomerDTO> GetCustomers() => _mapper.Map<IEnumerable<CustomerDTO>>(_context.Customers.ToList());
 
         [HttpGet("{id}")]
-        public ActionResult GetCustomer(int id) => (id == null)
+        public ActionResult GetCustomer(int id) => (id == 0)
             ? NotFound()
             : Ok(FindCustomerById((int)id));
 
