@@ -28,7 +28,7 @@ namespace Vidley.Controllers.API
         public IEnumerable<CustomerDTO> GetCustomers() => _mapper.Map<IEnumerable<CustomerDTO>>(_context.Customers.ToList());
 
         [HttpGet("{id}")]
-        public ActionResult GetCustomer(int? id) => (id == null)
+        public ActionResult GetCustomer(int id) => (id == null)
             ? NotFound()
             : Ok(FindCustomerById((int)id));
 
@@ -49,11 +49,12 @@ namespace Vidley.Controllers.API
         [HttpPut("{id}")]
         public ActionResult UpdateCustomer(int id, CustomerDTO customerDto)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || id == 0)
                 return BadRequest();
 
-            var customerFromDb = FindCustomerById(id);
-            customerDto.Id = customerFromDb.Id;
+            var customerFromDb = FindCustomerById((int) id);
+            customerDto.MembershipType = _mapper.Map<MembershipTypeDTO>(customerFromDb.MembershipType);
+
             _mapper.Map(customerDto, customerFromDb);
             _context.SaveChanges();
 
@@ -73,11 +74,8 @@ namespace Vidley.Controllers.API
             customerFromDb = _context.Customers.Single(c => c.Id == id);
 
             if (customerFromDb == null) throw new System.Web.Http.HttpResponseException(HttpStatusCode.NotFound);
+            customerFromDb.MembershipType = _context.MembershipTypes.FirstOrDefault(m => m.Id == customerFromDb.MembershipTypeId);
 
-            var customerDto = _mapper.Map<CustomerDTO>(customerFromDb);
-            customerDto.MembershipType = _mapper.Map<MembershipTypeDTO>(
-                _context.MembershipTypes.FirstOrDefault(m => m.Id == customerDto.MembershipTypeId)
-                );
             return customerFromDb;
         }
     }

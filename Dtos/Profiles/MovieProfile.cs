@@ -7,7 +7,7 @@ namespace Vidley.Dtos.Profiles
     {
         public MovieProfile()
         {
-            CreateMap<MovieDTO, Movie>();
+            CreateMap<MovieDTO, Movie>().ForMember(m => m.Id, opt => opt.Ignore());
             CreateMap<Movie, MovieDTO>();
 
             CreateMap<GenreDTO, Genre>();

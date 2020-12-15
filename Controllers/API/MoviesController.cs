@@ -50,7 +50,7 @@ namespace Vidley.Controllers.API
             if (!ModelState.IsValid || id == 0 || !id.HasValue) return BadRequest();
 
             var movieFromDb = FindMovieById(id);
-            movieDTO.Id = movieFromDb.Id;
+            movieDTO.Genre = _mapper.Map<GenreDTO>(movieFromDb.Genre);
             _mapper.Map(movieDTO, movieFromDb);
             _context.SaveChanges();
 

@@ -20,7 +20,6 @@ namespace Vidley.Models
         public MembershipType MembershipType { get; set; }
 
         [Display(Name ="Date of Birth")]
-        [Min18ForAMembership]
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "Membership Type")]
