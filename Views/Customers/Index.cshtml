@@ -12,55 +12,93 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Customer
             </th>
             <th>
                 Membership
             </th>
             <th></th>
-            <th>Delete</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Name, "Details", "Customers", new { id = item.Id }, null)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MembershipType.Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Customers", new { id = item.Id }, null)
-                </td>
-                <td>
-                    <button class="btn-link js-deleteBtn" data-customer-id ="@item.Id">Delete</button>
-                </td>
-            </tr>
-        }
+        @*@foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Name, "Details", "Customers", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MembershipType.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Customers", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        <button class="btn-link js-deleteBtn" data-customer-id ="@item.Id">Delete</button>
+                    </td>
+                </tr>
+            }*@
     </tbody>
 </table>
 
-@section Scripts{ 
-<script>
-    $(document).ready(function () {
-        $('#customersTable').DataTable();
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#customersTable').DataTable({
+                ajax: {
+                    url: "api/customers",
+                    dataSrc: "",
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return `<a href='/customers/details/${customer.id}'>` + data + "</a>"
+                        },
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-editBtn' data-customer-id =" + data + ">Edit</button>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-deleteBtn' data-customer-id =" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
 
 
-        $('#customersTable').on("click",".js-deleteBtn", function () {
-            var button = $(this);
-            bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
-                if (result) {
-                    console.log("click");
-                    $.ajax({
-                        url: "api/customers/" + button.attr("data-customer-id"),
-                        method: "DELETE",
-                        success: function () {button.parents("tr").remove();}
-                    });
-                }
-            }).removeClass("fade");
+            $('#customersTable').on("click", ".js-deleteBtn", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "api/customers/" + button.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () { button.parents("tr").remove(); }
+                        });
+                    }
+                }).removeClass("fade");
+            });
+
+            $('#customersTable').on("click", ".js-editBtn", function () {
+                var button = $(this);
+                console.log("click");
+                $.ajax({
+                    url: "api/customers/" + button.attr("data-customer-id"),
+                    method: "PUT",
+                    data: "customer",
+                    success: function () { button.parents("tr").remove(); }
+                });
+            });
         });
-    });
-</script>
+    </script>
 }
