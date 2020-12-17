@@ -45,7 +45,7 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('#customersTable').DataTable({
+            var table = $('#customersTable').DataTable({
                 ajax: {
                     url: "api/customers",
                     dataSrc: "",
@@ -53,12 +53,12 @@
                 columns: [
                     {
                         data: "name",
-                        render: function (data, type, customer) {
+                        render: function (data, type, customer) { //)(name props value, type of the prop, row to be rendered)
                             return `<a href='/customers/details/${customer.id}'>` + data + "</a>"
                         },
-                    },
+                    }, 
                     {
-                        data: "name"
+                        data: "membershipType.name"
                     },
                     {
                         data: "id",
@@ -83,7 +83,9 @@
                         $.ajax({
                             url: "api/customers/" + button.attr("data-customer-id"),
                             method: "DELETE",
-                            success: function () { button.parents("tr").remove(); }
+                            success: function () {
+                                table.row(button.parents("tr").remove()).remove().draw();
+                            }
                         });
                     }
                 }).removeClass("fade");
