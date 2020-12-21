@@ -7,7 +7,7 @@
 
 <h1>Customers</h1>
 
-@Html.ActionLink("New", "New", "Customers", null, new { @class = "btn btn-default my-3" })
+@Html.ActionLink("New", "New", "Customer", null, new { @class = "btn btn-default my-3" })
 <table class="table table-hover" id="customersTable">
     <thead>
         <tr>
@@ -54,7 +54,7 @@
                     {
                         data: "name",
                         render: function (data, type, customer) { //)(name props value, type of the prop, row to be rendered)
-                            return `<a href='/customers/details/${customer.id}'>` + data + "</a>"
+                            return `<a href='/customer/details/${customer.id}'>` + data + "</a>"
                         },
                     }, 
                     {
@@ -62,8 +62,9 @@
                     },
                     {
                         data: "id",
-                        render: function (data) {
-                            return "<button class='btn-link js-editBtn' data-customer-id =" + data + ">Edit</button>";
+                        render: function (data, type, customer) {
+                            //return "<button class='btn-link js-editBtn' data-customer-id =" + data + ">Edit</button>";
+                            return `<a href='/customer/edit?id=${customer.id}'> Edit </a>`
                         }
                     },
                     {
@@ -93,13 +94,15 @@
 
             $('#customersTable').on("click", ".js-editBtn", function () {
                 var button = $(this);
-                console.log("click");
-                $.ajax({
-                    url: "api/customers/" + button.attr("data-customer-id"),
-                    method: "PUT",
-                    data: "customer",
-                    success: function () { button.parents("tr").remove(); }
-                });
+                //$.ajax({
+                //    url: "api/customers/" + button.attr("data-customer-id"),
+                //    method: "PUT",
+                //    data: JSON.stringify(customer),
+                //    contentType: "application/json",
+                //    success: function () {
+                //        table.draw();
+                //    }
+                //});
             });
         });
     </script>

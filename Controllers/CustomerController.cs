@@ -1,20 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Vidley.Controllers.API;
 using Vidley.Data;
+using Vidley.Dtos;
 using Vidley.Models;
 using Vidley.ViewModels;
 
 namespace Vidley.Controllers
 {
-    public class CustomersController : Controller
+    public class CustomerController : Controller
     {
         private ApplicationDbContext _context;
+        private IMapper _mapper;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomerController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         protected override void Dispose(bool disposing)
@@ -26,14 +31,14 @@ namespace Vidley.Controllers
         /// Shows list of customers
         /// </summary>
         /// <returns></returns>
-        [Route("customers")]
+        [Route("[controller]")]
         public ActionResult Index()
         {
             //var customers = _context.Customers.Include(c => c.MembershipType).ToList();
             return View();
         }
 
-        [Route("customers/details/{id}")]
+        [Route("[controller]/details/{id}")]
         public ActionResult Details(int? id)
         {
             if (id.HasValue)
@@ -55,7 +60,7 @@ namespace Vidley.Controllers
         /// Renders empty customer form
         /// </summary>
         /// <returns></returns>
-        [Route("customers/new")]
+        [Route("[controller]/new")]
         public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
@@ -69,40 +74,30 @@ namespace Vidley.Controllers
         /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        [Route("customers/new")]
+        [Route("[controller]/new")]
         public ActionResult Save(CustomerFormViewModel model)
         {
             if (ModelState.IsValid)
             {
                 if (model.Customer.Id == 0)
+                {
                     _context.Customers.Add(model.Customer);
+                }
                 else
                 {
-                    var customer = model.Customer;
-                    var customerFromDb = _context.Customers.Single(c => c.Id == customer.Id);
+                    var customerDTO = _mapper.Map<CustomerDTO>(model.Customer);
+                    var customerFromDb = _context.Customers.Single(c => c.Id == customerDTO.Id);
 
-                    customerFromDb.Name = customer.Name.Trim();
-                    customerFromDb.IsSubscribeToNewsletter = customer.IsSubscribeToNewsletter;
-                    customerFromDb.Birthday = customer.Birthday;
-                    customerFromDb.MembershipTypeId = customer.MembershipTypeId;
+                    _mapper.Map<CustomerDTO, Customer>(customerDTO, customerFromDb);
                 }
                 _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            else
-            {
-                return View(
-                    "CustomerForm",
-                    new CustomerFormViewModel
-                    {
-                        Customer = model.Customer,
-                        MembershipTypesList = _context.MembershipTypes.ToList()
-                    }
-                    );
-            }
-            return RedirectToAction("Index", "Customers");
+            return View("CustomerForm",
+                new CustomerFormViewModel{Customer = model.Customer, MembershipTypesList = _context.MembershipTypes.ToList()});
         }
 
-        [Route("customers/edit")]
+        [Route("[controller]/edit")]
         public ActionResult Edit(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);

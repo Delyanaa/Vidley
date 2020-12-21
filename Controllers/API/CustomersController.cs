@@ -38,6 +38,7 @@ namespace Vidley.Controllers.API
         [HttpPost]
         public ActionResult CreateCustomer(CustomerDTO customerDto)
         {
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -46,7 +47,8 @@ namespace Vidley.Controllers.API
             _context.Customers.Add(customer);
             _context.SaveChanges();
 
-            return Created(new Uri(Request.GetDisplayUrl()), customerDto);
+            Uri uri = new Uri(Request.GetDisplayUrl());
+            return Created((uri == null ? new Uri("/api/custpmers") : uri), customerDto);
         }
 
         [HttpPut("{id}")]
